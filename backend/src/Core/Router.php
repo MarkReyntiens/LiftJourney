@@ -78,8 +78,18 @@ function jsonResponse(array $payload, int $status = 200): void
 
 function bearerToken(): ?string
 {
-    $header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-    if (preg_match('/Bearer\s+(.+)/', $header, $matches) !== 1) {
+    $header = $_SERVER['HTTP_AUTHORIZATION']
+        ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+        ?? '';
+
+    if ($header === '' && function_exists('getallheaders')) {
+        $headers = getallheaders();
+        if (is_array($headers)) {
+            $header = (string) ($headers['Authorization'] ?? $headers['authorization'] ?? '');
+        }
+    }
+
+    if (preg_match('/Bearer\s+(.+)/i', $header, $matches) !== 1) {
         return null;
     }
     return trim($matches[1]);
