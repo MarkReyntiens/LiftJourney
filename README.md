@@ -72,3 +72,5 @@ Voor `liftjourney-frontend`:
 Belangrijk:
 - `backend/Dockerfile` gebruikt Apache + PHP 8.3 + `pdo_mysql`.
 - Frontend moet wijzen naar je Render API URL via `VITE_API_BASE_URL`.
+
+
