@@ -40,6 +40,8 @@ Je kan dit overschrijven via `VITE_API_BASE_URL` in je frontend environment.
 - Checkt service + database connectie (`SELECT 1`)
 - `200` bij volledig OK
 - `503` als service draait maar database niet bereikbaar is
+- `GET /api/health/live`
+- Liveness endpoint zonder database-check (altijd `200` als API container draait)
 
 ## Meertalige API fouten
 
@@ -67,6 +69,7 @@ Voor `liftjourney-frontend`:
    - `VITE_API_BASE_URL` = URL van `liftjourney-api`
 
 5. Deploy en controleer:
+   - `https://<jouw-render-service>/api/health/live`
    - `https://<jouw-render-service>/api/health`
 
 Belangrijk:

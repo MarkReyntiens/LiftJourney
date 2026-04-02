@@ -134,6 +134,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET' && $incomingPath === '/api/h
     exit;
 }
 
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET' && $incomingPath === '/api/health/live') {
+    header('Content-Type: application/json');
+    http_response_code(200);
+    echo json_encode([
+        'status' => 'ok',
+        'service' => 'liftjourney-api',
+        'timestamp' => gmdate(DATE_ATOM),
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 require_once __DIR__ . '/src/bootstrap.php';
 
 use App\Core\I18n;
