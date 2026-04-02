@@ -1,0 +1,12 @@
+<IfModule mod_headers.c>
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Locale"
+Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+</IfModule>
+
+RewriteEngine On
+
+# Front controller in root: alles naar index.php behalve bestaande files/mappen
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L,QSA]

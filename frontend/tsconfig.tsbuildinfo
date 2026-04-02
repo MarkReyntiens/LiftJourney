@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/api/client.ts","./src/components/languageswitcher.tsx","./src/i18n/en.ts","./src/i18n/index.ts","./src/i18n/nl.ts","./src/i18n/types.ts","./src/pages/authpage.tsx","./src/pages/dashboardpage.tsx","./src/pages/exercisecreatepage.tsx"],"version":"5.9.3"}
