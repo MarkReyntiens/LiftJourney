@@ -8,13 +8,26 @@ import type { User } from "./types";
 
 type Screen = "dashboard" | "exercise-create";
 
+function normalizeToken(value: string | null): string {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const token = value.trim();
+  if (token === "" || token === "undefined" || token === "null") {
+    return "";
+  }
+
+  return token;
+}
+
 export function App() {
-  const [token, setToken] = useState<string>(() => localStorage.getItem("token") ?? "");
+  const [token, setToken] = useState<string>(() => normalizeToken(localStorage.getItem("token")));
   const [user, setUser] = useState<User | null>(null);
   const [screen, setScreen] = useState<Screen>("dashboard");
   const [locale, setLocale] = useState<Locale>(() => detectInitialLocale());
 
-  const authenticated = useMemo(() => token !== "", [token]);
+  const authenticated = useMemo(() => normalizeToken(token) !== "", [token]);
   const messages = useMemo(() => getMessages(locale), [locale]);
 
   useEffect(() => {
@@ -28,8 +41,9 @@ export function App() {
         messages={messages}
         onLocaleChange={setLocale}
         onAuthenticated={(newToken, currentUser) => {
-          localStorage.setItem("token", newToken);
-          setToken(newToken);
+          const normalizedToken = normalizeToken(newToken);
+          localStorage.setItem("token", normalizedToken);
+          setToken(normalizedToken);
           setUser(currentUser);
         }}
       />

@@ -29,6 +29,9 @@ export function AuthPage({ locale, messages, onLocaleChange, onAuthenticated }: 
       const path = mode === "login" ? "/api/auth/login" : "/api/auth/register";
       const body = mode === "login" ? { email, password } : { name, email, password };
       const data = await apiRequest<AuthResponse>(path, { method: "POST", body });
+      if (typeof data.token !== "string" || data.token.trim() === "") {
+        throw new Error(messages.common.unknownError);
+      }
       onAuthenticated(data.token, data.user);
     } catch (err) {
       setError(err instanceof Error ? err.message : messages.common.unknownError);
