@@ -18,7 +18,7 @@ final class PdoSessionRepository implements SessionRepository
         $token = bin2hex(random_bytes(32));
 
         $stmt = $this->pdo->prepare(
-            'INSERT INTO user_sessions (user_id, token, expires_at) VALUES (:user_id, :token, DATE_ADD(NOW(), INTERVAL 30 DAY))'
+            "INSERT INTO user_sessions (user_id, token, expires_at) VALUES (:user_id, :token, NOW() + INTERVAL '30 days')"
         );
         $stmt->execute([
             'user_id' => $userId,

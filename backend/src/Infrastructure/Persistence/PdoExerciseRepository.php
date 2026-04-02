@@ -18,35 +18,43 @@ final class PdoExerciseRepository implements ExerciseRepository
     {
         $this->pdo->beginTransaction();
 
-        $stmt = $this->pdo->prepare(
-            'INSERT INTO exercises (user_id, name, description, image_url, sets_count, start_reps, start_weight_kg)
-             VALUES (:user_id, :name, :description, :image_url, :sets_count, :start_reps, :start_weight_kg)'
-        );
-        $stmt->execute([
-            'user_id' => $exercise->userId,
-            'name' => $exercise->name,
-            'description' => $exercise->description,
-            'image_url' => $exercise->imageUrl,
-            'sets_count' => $exercise->setsCount,
-            'start_reps' => $exercise->startReps,
-            'start_weight_kg' => $exercise->startWeightKg,
-        ]);
-
-        $exerciseId = (int) $this->pdo->lastInsertId();
-
-        $linkStmt = $this->pdo->prepare(
-            'INSERT INTO exercise_target_muscles (exercise_id, muscle_group_id) VALUES (:exercise_id, :muscle_group_id)'
-        );
-
-        foreach ($exercise->muscleGroupIds as $muscleId) {
-            $linkStmt->execute([
-                'exercise_id' => $exerciseId,
-                'muscle_group_id' => $muscleId,
+        try {
+            $stmt = $this->pdo->prepare(
+                'INSERT INTO exercises (user_id, name, description, image_url, sets_count, start_reps, start_weight_kg)
+                 VALUES (:user_id, :name, :description, :image_url, :sets_count, :start_reps, :start_weight_kg)
+                 RETURNING id'
+            );
+            $stmt->execute([
+                'user_id' => $exercise->userId,
+                'name' => $exercise->name,
+                'description' => $exercise->description,
+                'image_url' => $exercise->imageUrl,
+                'sets_count' => $exercise->setsCount,
+                'start_reps' => $exercise->startReps,
+                'start_weight_kg' => $exercise->startWeightKg,
             ]);
+
+            $exerciseId = (int) $stmt->fetchColumn();
+
+            $linkStmt = $this->pdo->prepare(
+                'INSERT INTO exercise_target_muscles (exercise_id, muscle_group_id) VALUES (:exercise_id, :muscle_group_id)'
+            );
+
+            foreach ($exercise->muscleGroupIds as $muscleId) {
+                $linkStmt->execute([
+                    'exercise_id' => $exerciseId,
+                    'muscle_group_id' => $muscleId,
+                ]);
+            }
+
+            $this->pdo->commit();
+
+            return $exerciseId;
+        } catch (\Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
         }
-
-        $this->pdo->commit();
-
-        return $exerciseId;
     }
 }

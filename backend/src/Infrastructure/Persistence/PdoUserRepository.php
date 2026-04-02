@@ -17,7 +17,7 @@ final class PdoUserRepository implements UserRepository
     public function create(string $name, string $email, string $passwordHash): User
     {
         $stmt = $this->pdo->prepare(
-            'INSERT INTO users (name, email, password_hash) VALUES (:name, :email, :password_hash)'
+            'INSERT INTO users (name, email, password_hash) VALUES (:name, :email, :password_hash) RETURNING id'
         );
         $stmt->execute([
             'name' => $name,
@@ -25,7 +25,7 @@ final class PdoUserRepository implements UserRepository
             'password_hash' => $passwordHash,
         ]);
 
-        $id = (int) $this->pdo->lastInsertId();
+        $id = (int) $stmt->fetchColumn();
         return new User($id, $name, $email);
     }
 

@@ -1,7 +1,7 @@
 # LiftJourney
 
 Eerste stap van de app:
-- `backend`: PHP API (zonder framework) met MariaDB
+- `backend`: PHP API (zonder framework) met PostgreSQL
 - `frontend`: React + TypeScript
 
 ## Architectuur
@@ -16,7 +16,7 @@ Zo houden we verantwoordelijkheden gescheiden (SOLID).
 
 ## Snel starten
 
-1. Maak een MariaDB database aan (bijv. `lift_journey`)
+1. Maak een PostgreSQL database aan (bijv. `lift_journey`)
 2. Voer `backend/database/schema.sql` uit
 3. Kopieer `backend/.env.example` naar `backend/.env` en vul je DB settings
 4. Start backend:
@@ -26,7 +26,7 @@ Zo houden we verantwoordelijkheden gescheiden (SOLID).
    - `npm install`
    - `npm run dev`
 
-Frontend gebruikt standaard `https://apiliftjourney.infinityfreeapp.com`.
+Frontend gebruikt standaard `http://localhost:8080`.
 Je kan dit overschrijven via `VITE_API_BASE_URL` in je frontend environment.
 
 ## Deploy op shared hosting
@@ -70,7 +70,7 @@ Voor `liftjourney-frontend`:
    - `https://<jouw-render-service>/api/health`
 
 Belangrijk:
-- `backend/Dockerfile` gebruikt Apache + PHP 8.3 + `pdo_mysql`.
+- `backend/Dockerfile` gebruikt Apache + PHP 8.3 + `pdo_pgsql`.
 - Frontend moet wijzen naar je Render API URL via `VITE_API_BASE_URL`.
 
 
