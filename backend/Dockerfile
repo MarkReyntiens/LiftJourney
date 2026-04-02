@@ -15,4 +15,8 @@ WORKDIR /var/www/html
 
 COPY backend/ /var/www/html/
 
-EXPOSE 80
+RUN chmod +x /var/www/html/docker/start-apache.sh
+
+EXPOSE 10000
+
+CMD ["/var/www/html/docker/start-apache.sh"]
