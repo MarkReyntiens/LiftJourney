@@ -77,4 +77,12 @@ Belangrijk:
 - `backend/Dockerfile` gebruikt Apache + PHP 8.3 + `pdo_pgsql`.
 - Frontend moet wijzen naar je Render API URL via `VITE_API_BASE_URL`.
 
+## Supabase tip
+
+- Supabase werkt extern, maar gebruik op Render bij voorkeur de pooler (IPv4) connectie.
+- Typische pooler instellingen:
+  - `DB_HOST=<project>.pooler.supabase.com`
+  - `DB_PORT=6543`
+  - `DB_SSLMODE=require`
+
 

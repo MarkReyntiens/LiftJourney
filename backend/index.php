@@ -94,8 +94,20 @@ function healthDatabaseHint(string $message): string
     if (str_contains($msg, 'php_network_getaddresses') || str_contains($msg, 'name or service not known')) {
         return 'invalid_db_host';
     }
+    if (str_contains($msg, 'could not translate host name')) {
+        return 'invalid_db_host';
+    }
     if (str_contains($msg, 'connection refused') || str_contains($msg, 'timed out')) {
         return 'db_host_unreachable';
+    }
+    if (str_contains($msg, 'network is unreachable') || str_contains($msg, 'no route to host')) {
+        return 'db_network_unreachable_use_supabase_pooler';
+    }
+    if (str_contains($msg, 'no pg_hba.conf entry')) {
+        return 'db_rejected_connection_check_ssl_and_host';
+    }
+    if (str_contains($msg, 'server closed the connection unexpectedly')) {
+        return 'db_server_closed_connection_check_port_ssl_pooler';
     }
 
     return 'check_db_host_name_user_password';
