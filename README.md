@@ -61,6 +61,7 @@ Voor `liftjourney-api`:
    - `APP_URL`
    - `DB_HOST`
    - `DB_PORT`
+   - `DB_SSLMODE` (`require` voor Supabase)
    - `DB_NAME`
    - `DB_USER`
    - `DB_PASS`

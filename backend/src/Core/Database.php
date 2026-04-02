@@ -15,8 +15,9 @@ final class Database
         $db = $_ENV['DB_NAME'] ?? '';
         $user = $_ENV['DB_USER'] ?? '';
         $pass = $_ENV['DB_PASS'] ?? '';
+        $sslMode = $_ENV['DB_SSLMODE'] ?? 'require';
 
-        $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $host, $port, $db);
+        $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s;sslmode=%s', $host, $port, $db, $sslMode);
 
         return new PDO($dsn, $user, $pass, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

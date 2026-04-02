@@ -58,7 +58,8 @@ function healthCheckDatabase(): array
         $db = $_ENV['DB_NAME'] ?? '';
         $user = $_ENV['DB_USER'] ?? '';
         $pass = $_ENV['DB_PASS'] ?? '';
-        $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $host, $port, $db);
+        $sslMode = $_ENV['DB_SSLMODE'] ?? 'require';
+        $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s;sslmode=%s', $host, $port, $db, $sslMode);
 
         $pdo = new \PDO($dsn, $user, $pass, [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
